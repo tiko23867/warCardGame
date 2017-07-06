@@ -1,0 +1,24 @@
+</html>
+Heyoh
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+<script>
+
+var deckId;
+$.get("https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1", function(data){
+	deckId = JSON.stringify(data.deck_id);
+
+	deckId = deckId.substr(1,deckId.length - 2);
+	console.log(deckId);
+});
+
+$.get("https://deckofcardsapi.com/api/deck/" + deckId + "/draw/?count=1", function(data)
+{
+	console.console.log(data);
+});
+
+
+</script>
+
+</html>
