@@ -1,18 +1,24 @@
-var p1 = 0;
-var p2 = 0;
-var c1 = [];
-var c2 = [];
+var points1 = 0;
+var points2 = 0;
+//var c1 = [];
+//var c2 = [];
+var pres1 = 0;
+var pres2 = 0;
+var i = 0;
 
+/* For making a new deck
 $.get("https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1", deckId = function(data){
 	var deckId = JSON.stringify(data.deck_id);
 	deckId = deckId.substr(1,deckId.length - 2);
 
-	//var deckNum = data.remaining;
-	//console.log(deckNum);
+	console.log(deckId);
+	*/
 
+//This expires in 2 weeks
+var deckId = '1kxx9naho1bf';
 
-//while (deckNum != 0)
-//{
+$.get("https://deckofcardsapi.com/api/deck/" + deckId + "/shuffle/",function(data){
+
 
 	$.get("https://deckofcardsapi.com/api/deck/" + deckId + "/draw/?count=52", deckId = function(data){
 		//document.getElementById("card1").src = data.cards[0].image;
@@ -20,6 +26,9 @@ $.get("https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1", deckId = 
 		var deckNum = data.remaining;
 	//console.log(deckNum);
 
+	var c1 = [];
+	var c2 = [];
+	//Makes the deck for both players
 		for (var u = 0; u < 52; u++)
 		{
 			if (u % 2 === 0 || u === 0)
@@ -29,69 +38,94 @@ $.get("https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1", deckId = 
 				c2.push(data.cards[u].value)
 		}
 
-	//console.log(c1.length);
-	//console.log(c2.length);
-
 	var players = [c1, c2];
 
 	var faceCards = ['JACK','QUEEN','KING','ACE'];
 	var l = faceCards.length;
 
 //Converts the Face cards
-//while (c1.length + c2.length != 52)
 for (var x = 0; x < 26; x++)
 {
 	for (var j = 0; j < 2; j++)
 	{
-		for (var i = 0; i < l; i++)
+		for (var h = 0; h < l; h++)
 		{
-			if (players[j] == faceCards[i])
+			if (players[j][x] == faceCards[h])
 			{
-				players[j] = 11 + i;
+				players[j][x] = 11 + h;
 				break;
 			}
 		}
 	}
 }
 
-var i = 0;
+//Present value
+pres1 = players[0][i];
+pres2 = players[1][i];
 
-while (i != 26)
-{
+next(pres1, pres2);
+
+//Future value
+var f1next = players[0][i + 1];
+var f2next = players[1][i + 1];
 
 var im1 = data.cards[i].image;
 var im2 = data.cards[i +1].image;
 
-	document.getElementById("card1").src = im1;
-	document.getElementById("card2").src = im2;
-
-	setTimeout(function() {}, 3000);
-
-	if (players[0][i] > players[1][i])
-	{
-		alert("Player One wins!");
-	}
-
-	else if (players[0][i] < players[1][i])
-	{
-		alert("Player Two wins!");
-	}
-
-	else
-	{
-		alert("Tie!");
-	}
-
-	i++;
-}
+document.getElementById("card1").src = im1;
+document.getElementById("card2").src = im2;
 
 	});
 });
 
 
+//Functions
 
+function next(c1, c2)
+{
+	$("#p1").html(c1);
+	$("#p2").html(c2);
 
+	$("#turn").html(i);
+}
+
+function compare(num1, num2)
+{
+	num1 = parseInt(num1);
+	num2 = parseInt(num2);
+
+	if (num1 > num2)
+	{
+		points1;
+		alert("Player 1 wins!");
+	}
+
+	else if (num1 < num2)
+	{
+		points2++;
+		alert("Player 2 wins!");
+	}
+
+	else
+	{
+		alert("Draw!");
+	}
+
+	console.log(points1 + "vs" + points2);
+	console.log("I is " + i);
+
+}
+
+//WORD OF THE DAY!
 $.get("http://setgetgo.com/randomword/get.php", function(data){
-						word = data;
 						$("#something").html(data);
         });
+
+	function sleep(milliseconds) {
+	  var start = new Date().getTime();
+	  for (var i = 0; i < 1e7; i++) {
+	    if ((new Date().getTime() - start) > milliseconds){
+	      break;
+	    }
+	  }
+	}

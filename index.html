@@ -8,10 +8,17 @@
 	<div id="something"></div>
 
 	<h2>Player One's Card:</h2>
+	<p1 id = "p1"></p1>
 	<img id = "card1" src="">
 
 	<h2>Player Two's Card:</h2>
+	<p2 id = "p2"></p2>
 	<img id = "card2" src="">
+
+	<t id="turn"></t>
+
+	<button type="button" onclick="compare($('#p1').html(),$('#p2').html())">Battle!</button>
+	<button type="button" onclick="next($('#turn').html())">Next!</button>
 </body>
 
 
