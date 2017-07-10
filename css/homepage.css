@@ -1,0 +1,23 @@
+body {
+		text-align: center;
+		background-color: #fafafa !important;
+}
+
+.buttonStuff {
+		outline: none;
+		color: #fff;
+		background-color: #1c0fb1;
+		border: none;
+		border-radius: 15px;
+		box-shadow: 0 9px #999;
+}
+
+.buttonStuff:hover {
+		background-color: #150b82;
+}
+
+.buttonStuff:active {
+		background-color: #150b82;
+		box-shadow: 0 5px #666;
+		transform: translateY(4px);
+}

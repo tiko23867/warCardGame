@@ -1,41 +1,48 @@
 var points1 = 0;
 var points2 = 0;
 var i = 1;
+var c1 = 0,
+c2 = 0;
 
+window.onload = function() {
+  start();
+};
 //This expires in 2 weeks
 var deckId = '1kxx9naho1bf';
 
-$.get("https://deckofcardsapi.com/api/deck/" + deckId + "/shuffle/",function(data){
-	getCards();
-});
+function start()
+{
+	$.get("https://deckofcardsapi.com/api/deck/" + deckId + "/shuffle/",function(data){
+		getCards();
+	});
+}
 
 function getCards()
 {
 	$.get("https://deckofcardsapi.com/api/deck/" + deckId + "/draw/?count=2", function(data){
 
-		if (i === 27)
+		if (i === 26)
 		{
-			end();
+			document.getElementById("get").onclick = end;
+			$("#get").html("See Who Won!");
 		}
 
-	var c1 = data.cards[0].value;
-	var c2 = data.cards[1].value;
+	c1 = data.cards[0].value;
+	c2 = data.cards[1].value;
 
-var pres1 = c1 === 'JACK' ? 11 :
+c1 = c1 === 'JACK' ? 11 :
 				c1 === 'QUEEN' ? 12 :
 				c1 === 'KING' ? 13 :
 				c1 === 'ACE' ? 14 :
 				c1;
 
-var pres2 = c2 === 'JACK' ? 11 :
+c2 = c2 === 'JACK' ? 11 :
 				c2 === 'QUEEN' ? 12 :
 				c2 === 'KING' ? 13 :
 				c2 === 'ACE' ? 14 :
 				c2;
 
-
-next(pres1, pres2);
-
+next();
 
 var im1 = data.cards[0].image;
 var im2 = data.cards[1].image;
@@ -43,36 +50,33 @@ var im2 = data.cards[1].image;
 document.getElementById("card1").src = im1;
 document.getElementById("card2").src = im2;
 
-console.log(data.remaining);
 
-/*
-if (data.remaining === 0)
-{
-	end();
-}*/
+console.log(data.remaining);
 
 	});
 }
 
 //Functions
-function next(c1, c2)
+function next()
 {
-	$("#p1").html(c1);
-	$("#p2").html(c2);
-
-	$("#turn").html(i);
+	$("#turn").html("Turn: " + i);
 	i++;
 }
 
-function compare(num1, num2)
+function compare()
 {
-	num1 = parseInt(num1);
-	num2 = parseInt(num2);
+	console.log(c1 + " vs " + c2);
+	var num1 = parseInt(c1);
+	var num2 = parseInt(c2);
 
 	if (num1 > num2)
 	{
 		points1++;
-		alert("Player 1 wins!");
+		swal({
+		  title: "Player 1 wins!",
+		  text: '<i class="fa fa-heart" aria-hidden="true"></i>',
+		  html: true
+		});
 	}
 
 	else if (num1 < num2)
@@ -90,11 +94,28 @@ function compare(num1, num2)
 
 function end()
 {
-	var x = points1 > points2 ? "Player 1 wins with " + points1 + "s" :
-				points1 < points2 ? "Player 2 wins with " + points2 + "s" :
-				"Tie!" + points1 + "vs" + points2;
+	var x = points1 > points2 ? "Player 1 wins with " + points1 + " points" :
+				points1 < points2 ? "Player 2 wins with " + points2 + " points" :
+				"Tie!" + points1 + " vs " + points2;
 
-	alert(x);
+	swal({
+	  title: x,
+	  text: '<i class="fa fa-heart" aria-hidden="true"></i>',
+	  html: true
+	});
+
+	document.getElementById("get").onclick = restart;
+	$("#get").html("Restart!");
+}
+
+function restart()
+{
+	i = 1;
+	points1 = 0;
+	points2 = 0;
+	document.getElementById("get").onclick = getCards;
+	$("#get").html("Get Cards!");
+	start();
 }
 
 //WORD OF THE DAY!
