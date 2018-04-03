@@ -8,14 +8,22 @@ window.onload = function() {
   start();
 };
 //This expires in 2 weeks
-var deckId = '1kxx9naho1bf';
+var deckId = 'su4e3olnotbx';
+
 
 function start()
 {
-	$.get("https://deckofcardsapi.com/api/deck/" + deckId + "/shuffle/",function(data){
-		getCards();
-	});
+    $.get("https://deckofcardsapi.com/api/deck/" + deckId + "/shuffle/",function(data){
+    	getCards();
+    })
+    .fail(function() {
+        $.get("https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1",function(data){
+            deckId = data.deck_id;
+            start();
+        });
+    })
 }
+
 
 function getCards()
 {
@@ -117,17 +125,3 @@ function restart()
 	$("#get").html("Get Cards!");
 	start();
 }
-
-//WORD OF THE DAY!
-$.get("http://setgetgo.com/randomword/get.php", function(data){
-						$("#something").html(data);
-        });
-
-	function sleep(milliseconds) {
-	  var start = new Date().getTime();
-	  for (var i = 0; i < 1e7; i++) {
-	    if ((new Date().getTime() - start) > milliseconds){
-	      break;
-	    }
-	  }
-	}
